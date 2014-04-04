@@ -28,6 +28,7 @@ function Update () {
 function OnCollisionEnter()
 {
 	GameManager.getInstance().addScore();
+	GameManager.getInstance().stepping=true;
 }
 
 function OnCollisionStay () {
@@ -37,13 +38,18 @@ function OnCollisionStay () {
 	}
 }
 
+function OnCollisionExit()
+{
+	GameManager.getInstance().stepping=false;
+}
+
 public function createNextPlatform()
 {
 	var platformDistance:float = (Random.value*(maxDistance-minDistance)+minDistance)*(1+GameManager.getInstance().difficulty*0.27);
 	var platformHeight:float = Random.value*maxHeight*2-maxHeight;
 	var newPlatform = Instantiate(platformPrefab, Vector3(transform.position.x+transform.localScale.x 
 		+ platformDistance, transform.position.y + platformHeight, transform.position.z),Quaternion.identity);
-	newPlatform.transform.localScale.x = (Random.value*(maxScale - minScale) + minScale)*(1-GameManager.getInstance().difficulty*0.005);
+	newPlatform.transform.localScale.x = (Random.value*(maxScale - minScale) + minScale)*(1-GameManager.getInstance().difficulty*0.001);
 	farthestPlatform = newPlatform.GetComponent(PlatformScript);
 }
 
